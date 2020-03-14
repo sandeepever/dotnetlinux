@@ -2,7 +2,9 @@ pipeline{
     agent any
     stages{
         stage('Git Checkout'){
-            git 'https://github.com/sandeepever/dotnetlinux'  
+            steps{
+                git 'https://github.com/sandeepever/dotnetlinux'  
+            }
         }
 
         stage('Build Docker Images'){
@@ -22,11 +24,13 @@ pipeline{
 
         stage('Remove Previous Container'){
             steps{
-                try{
-                     sh 'docker rm -f dotnetlinuxp'             
-                 }catch(error){
-                     sh 'docker stop dotnetlinux'
-                     sh 'docker rm dotnetlinux'            
+                script{
+                    try{
+                        sh 'docker rm -f dotnetlinuxp'             
+                    }catch(error){
+                        sh 'docker stop dotnetlinux'
+                        sh 'docker rm dotnetlinux'            
+                    }
                 }
             }
         }
