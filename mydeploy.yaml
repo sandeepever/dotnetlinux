@@ -3,7 +3,10 @@ kind: Deployment
 metadata:
   name: dotnetlinux
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnetlinux
+  replicas: 2
   template:
     metadata:
       labels:
