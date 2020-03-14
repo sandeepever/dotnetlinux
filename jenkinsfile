@@ -1,7 +1,7 @@
 pipeline{
     agent any
     stages{
-        /*stage('Git Checkout'){
+        stage('Git Checkout'){
             steps{
                 git 'https://github.com/sandeepever/dotnetlinux'  
             }
@@ -22,7 +22,7 @@ pipeline{
             }
         }
 
-        stage('Remove Previous Container'){
+        /*stage('Remove Previous Container'){
             steps{
                 script{
                     try{
