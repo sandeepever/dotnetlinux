@@ -2,7 +2,7 @@ pipeline{
     agent any
     stages{
         stage('Git Checkout'){
-            git 'https://github.com/sandeepsri/dotnetlinux-make-container'  
+            git 'https://github.com/sandeepever/dotnetlinux'  
         }
 
         stage('Build Docker Images'){
