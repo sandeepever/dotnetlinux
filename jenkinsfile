@@ -22,7 +22,7 @@ pipeline{
             }
         }
 
-        stage('Remove Previous Container'){
+        /*stage('Remove Previous Container'){
             steps{
                 script{
                     try{
@@ -33,7 +33,7 @@ pipeline{
                     }
                 }
             }
-        }
+        }*/
 
         /*stage('Deploy to Dev Environment'){
             sh 'docker run -d -p 9000:80 --name webapp sandeep76/dotnetlinux'
