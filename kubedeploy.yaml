@@ -1,0 +1,30 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dotnetlinux
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: dotnetlinux
+    spec:
+      containers:
+        - image: "sandeep76/dotnetlinux"
+          imagePullPolicy: Always
+          name: dotnetlinux
+          ports:
+            - containerPort: 80
+
+---
+#Service Deploy
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnetlinux
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+  selector:
+    app: dotnetlinux
