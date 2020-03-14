@@ -6,22 +6,28 @@ pipeline{
         }
 
         stage('Build Docker Images'){
-            sh 'docker build -t sandeep76/dotnetlinux .'
+            steps{
+                sh 'docker build -t sandeep76/dotnetlinux .'
+            }
         }
          
         stage('Push to Docker Hub'){ 
-            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubCred')]) {
-                sh "docker login -u sandeep76 -p ${dockerhubCred}"
+            steps{
+                withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubCred')]) {
+                     sh "docker login -u sandeep76 -p ${dockerhubCred}"
+                }
+                     sh 'docker push sandeep76/dotnetlinux'
             }
-            sh 'docker push sandeep76/dotnetlinux'
         }
 
         stage('Remove Previous Container'){
-            try{
-                sh 'docker rm -f dotnetlinuxp'             
-            }catch(error){
-                sh 'docker stop dotnetlinux'
-                sh 'docker rm dotnetlinux'            
+            steps{
+                try{
+                     sh 'docker rm -f dotnetlinuxp'             
+                 }catch(error){
+                     sh 'docker stop dotnetlinux'
+                     sh 'docker rm dotnetlinux'            
+                }
             }
         }
 
@@ -30,18 +36,20 @@ pipeline{
         }*/
  
         stage('Deploy on k8s cluster'){
-            /*kubernetesDeploy(
-                configs: 'kubedeploy.yaml',
-                kubeconfigId: 'KUBERNETES_CICD',
-                enableConfigSubstitution: true
-            )*/
-            sshagent(['KubeSSH']) {
-                sh "scp -o StrictHostKeyChecking=no myservice.yaml mydeploy.yaml kailas@192.168.122.2:/home/kailas/"
-                script{
-                    try{
-                         sh "ssh kailas@192.168.122.2 kubectl apply -f ."
-                    }catch(error){
-                         sh "ssh kailas@192.168.122.2 kubectl create -f ."
+            steps{
+                 /*kubernetesDeploy(
+                    configs: 'kubedeploy.yaml',
+                    kubeconfigId: 'KUBERNETES_CICD',
+                    enableConfigSubstitution: true
+                )*/
+                sshagent(['KubeSSH']) {
+                    sh "scp -o StrictHostKeyChecking=no myservice.yaml mydeploy.yaml kailas@192.168.122.2:/home/kailas/"
+                    script{
+                        try{
+                            sh "ssh kailas@192.168.122.2 kubectl apply -f ."
+                        }catch(error){
+                            sh "ssh kailas@192.168.122.2 kubectl create -f ."
+                        }
                     }
                 }
             } 
