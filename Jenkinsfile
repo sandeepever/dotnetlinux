@@ -47,12 +47,12 @@ pipeline{
                     enableConfigSubstitution: true
                 )*/
                 sshagent(['KubeSSH']) {
-                    sh "scp -o StrictHostKeyChecking=no myservice.yaml mydeploy.yaml kailas@192.168.122.2:/home/kailas/"
+                    sh "scp -o StrictHostKeyChecking=no myservice.yaml mydeploy.yaml kailas@192.168.122.2:/home/sandeep/kube/"
                     script{
                         try{
-                            sh "ssh kailas@192.168.122.2 kubectl apply -f ."
+                            sh "ssh sandeep@192.168.122.2 kubectl apply -f ."
                         }catch(error){
-                            sh "ssh kailas@192.168.122.2 kubectl create -f ."
+                            sh "ssh sandeep@192.168.122.2 kubectl create -f ."
                         }
                     }
                 }
