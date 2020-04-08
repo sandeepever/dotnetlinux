@@ -18,7 +18,7 @@ pipeline{
                 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubCred')]) {
                      sh "docker login -u sandeep76 -p ${dockerhubCred}"
                 }
-                     sh 'docker push sandeep76/dotnetlinux'
+                    /*sh 'docker push sandeep76/dotnetlinux'*/
             }
         }
 
@@ -48,13 +48,13 @@ pipeline{
                 )*/
                 sshagent(['KubeSSH']) {
                     sh "scp -o StrictHostKeyChecking=no myservice.yaml mydeploy.yaml sandeep@192.168.122.2:/home/sandeep/"
-                    script{
+                    /*script{
                         try{
                             sh "ssh sandeep@192.168.122.2 kubectl apply -f ."
                         }catch(error){
                             sh "ssh sandeep@192.168.122.2 kubectl create -f ."
                         }
-                    }
+                    }*/
                 }
             } 
         } 
